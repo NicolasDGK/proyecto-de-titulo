@@ -1,0 +1,104 @@
+.card-products {
+    width: 20rem;
+    display: flex;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.right-side {
+    min-width: 340px;
+}
+
+.left-side {
+    position: relative;
+}
+
+img {
+    width: 140px;
+    height: 140px;
+    margin: 10px auto;
+}
+
+h6 {
+    margin: 0px;
+    color: #343a40;
+    font-size: 12px;
+    font-family: 'Arial';
+    font-style: normal;
+}
+
+h5 {
+    margin: 0px;
+    color: #343a40;
+    font-size: 14px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: bold;
+}
+
+p {
+    font-size: 16px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.card-best-price {
+    color: red;
+}
+
+.card-normal-price {
+    color: #343a40;
+}
+
+.btn-primary {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #FF6F1E;
+    border-color: #FF6F1E;
+}
+
+.card-title {
+    margin-bottom: 8px;
+}
+
+span {
+    font-size: 16px;
+    font-family: 'Arial';
+    font-style: normal;
+    margin-bottom: 6px;
+}
+
+.list-products {
+    padding-top: 0.71rem!important;
+    padding-bottom: 0.5rem!important;
+    min-height: 100%;
+}
+
+.aler-product {
+    padding-top: 23%;
+    padding-bottom: 22%;
+}
+
+.filter-button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.pagination-products {
+    margin-top: 1rem;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: bold;
+}
+
+.alert-container {
+    position: absolute;
+    width: 25%;
+    min-width: 350px;
+}
+
+.container-fluid {
+    position: relative;
+}

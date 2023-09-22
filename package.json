@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/googlemaps": "^3.43.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9"
+  }
+}

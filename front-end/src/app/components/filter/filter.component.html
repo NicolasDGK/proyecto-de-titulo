@@ -1,0 +1,124 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="right-side col-4 col-sm-12 col-md-12 col-lg-3 py-3">
+            <div class="card">
+                <form [formGroup]="filter_form" (ngSubmit)="submit_filter()">
+                    <h2 class="px-3 py-2">Filtros</h2>
+                    <!-- category -->
+                    <div class="filter-option px-3">
+                        <span>Categoria</span>
+                        <select #FilterCategory (change)="selectCategory(FilterCategory.value)" class="form-select"
+                            aria-label="Default select example" id="select-category">
+                            <option selected value="null">Seleccione una categoría</option>
+                            <option *ngFor="let categoria of ListCategorias" [value]="categoria.id_categoria">
+                                {{categoria.categoria}}
+                            </option>
+                        </select>
+                    </div>
+                    <!-- brand -->
+                    <div class="filter-option px-3 py-3">
+                        <span>Marca</span>
+                        <select #FilterBrand (change)="selectBrand(FilterBrand.value)" class="form-select"
+                            aria-label="Default select example" id="select-brand" [disabled]="value_category == null">
+                            <option selected value="null">Seleccione una marca</option>
+                            <option *ngFor="let marca of ListMarcas" [value]="marca.id_marca">
+                                {{marca.marca}}
+                            </option>
+                        </select>
+                    </div>
+                    <!-- type of product -->
+                    <div class="filter-option px-3 py-3">
+                        <span>Tipo de producto</span>
+                        <select #FilterType (change)="selectType(FilterType.value)" class="form-select"
+                            aria-label="Default select example" id="select-type" [disabled]="value_category == null">
+                            <option selected value="null">Seleccione un tipo de producto</option>
+                            <option *ngFor="let tipo of ListTipos" [value]="tipo.id_tipo">
+                                {{tipo.tipo}}
+                            </option>
+                        </select>
+                    </div>
+                    <!-- price range -->
+                    <div class="filter-option px-3 py-3">
+                        <label for="inicial_price" class="form-label">Precio mínimo</label>
+                        <input type="number" class="form-control" id="inicial_price" value="0" min="0">
+                    </div>
+                    <div class="filter-option px-3 py-3">
+                        <label for="final_price" class="form-label">Precio máximo</label>
+                        <input type="number" class="form-control" id="final_price" value="100000" min="0">
+                    </div>
+                    <div class="filter-option px-3 py-3 d-flex justify-content-center">
+                        <!-- clear button -->
+                        <div class="filter-button">
+                            <button class="btn btn-primary" type="reset" id="reset_button"
+                                (click)="clear_filters()">LIMPIAR</button>
+                        </div>
+                        <!-- submit button -->
+                        <div class="filter-button">
+                            <button class="btn btn-primary" type="submit" id="submit_button" [disabled]="value_category == null">FILTRAR</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="left-side col-sm-12 col-md-12 col-lg-9" *ngIf="ListProductos.length > 0">
+            <div class="container list-products">
+                <div class="row">
+                    <div *ngFor="let producto of ListProductos" class="card card-products col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="image-product text-center">
+                            <a [routerLink]="['/details', producto.id_producto]" routerLinkActive="router-link-active">
+                                <img src="{{producto.imagen}}" class="card-img-top" alt="{{producto.nombre}}" (error) ="onImgError($event)">
+                            </a>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{producto.nombre}}</h5>
+                            <h6 class="card-title">{{producto.marca}}</h6>
+                            <!-- Best Price -->
+                            <div class="price mt-auto">
+                                <ng-container
+                                    *ngIf="product_on_offer(producto.precio_oferta); then SalePrice; else NormalPrice">
+                                </ng-container>
+                                <ng-template #SalePrice>
+                                    <div class="card-best-price">
+                                        <p>$ {{numberWithPoints(producto.precio_oferta)}}</p>
+                                    </div>
+                                </ng-template>
+                                <ng-template #NormalPrice>
+                                    <div class="card-normal-price">
+                                        <p>$ {{numberWithPoints(producto.precio_normal)}}</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <!-- Button -->
+                            <button class="btn btn-primary justify-content-center" (click)="add_product_cart(producto.id_producto, producto.nombre, producto.marca, producto.imagen)">AGREGAR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pagination-products align-items-end" *ngIf="flag_pagination == true">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <nav aria-label="Navigation products filter">
+                            <ul class="pagination justify-content-center">
+                              <li class="page-item" [ngClass]="flag_previous == false ? 'disabled' : ''">
+                                <a class="page-link" (click)="previous_page()">Anterior</a>
+                              </li>
+                              <li class="page-item" [ngClass]="flag_next == false ? 'disabled' : ''">
+                                <a class="page-link" (click)="next_page()">Siguiente</a>
+                              </li>
+                            </ul>
+                          </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-12 col-md-9 col-xl-9" *ngIf="ListProductos.length == 0">
+            <div class="container aler-product">
+                <div class="row text-center">
+                    <div class="col-12 justify-content-center">
+                        <p>
+                            <mat-icon>error_outline</mat-icon> No se encontró productos relacionados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

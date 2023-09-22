@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <h2>{{Producto.nombre}}</h2>
+  <div class="row justify-content-md-center">
+    <div class="card card-image col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      <img class="card-img-top" src="{{Producto.imagen}}" alt="{{Producto.nombre}}" (error) ="onImgError($event)">
+    </div>
+    <div class="card col-sm-12 col-md-12 col-lg-8 col-xl-8">
+      <div class="card-body">
+        <div>
+          <h5>Especificaciones: </h5>
+          <div class="category-product">
+            <span class="features-product">Categoria: </span>
+            <span>{{Producto.categoria}}</span>
+          </div>
+          <div class="brand-product">
+            <span class="features-product">Marca: </span>
+            <span>{{Producto.marca}}</span>
+          </div>
+          <div class="type-product">
+            <span class="features-product">Tipo de producto: </span>
+            <span>{{Producto.tipo_producto}}</span>
+          </div>
+        </div>
+        <br>
+        <div>
+          <h5>Detalles: </h5>
+          <div class="description-product">
+            <span class="features-product">Descripción: </span>
+            <span class="card-text">{{Producto.descripcion}}</span>
+          </div>
+          <div class="ingredients-product" *ngIf="exists_ingredients(Producto.ingredientes)">
+            <span class="features-product">Ingredientes: </span>
+            <span class="card-text">{{Producto.ingredientes}}</span>
+          </div>
+
+          <div class="subscribe-checkbox">
+            <input type="checkbox" id="subscribeCheckbox" [(ngModel)]="subscribeToProduct" [disabled]="!isLoggedIn()" (change)="onSubscribeCheckboxChange()">
+            <label for="subscribeCheckbox">Recibir notificaciones cuando baje de precio</label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mx-5 my-4">
+    <div class="col-12">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">Supermercado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Precio Normal</th>
+            <th scope="col">Oferta</th>
+            <th scope="col">Disponible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of ListaSuperProducto">
+            <td><a href="{{row.url_product}}">{{row.supermercado}}<mat-icon>open_in_new</mat-icon></a></td>
+            <td>{{ convert_date(row.fecha) }}</td>
+            <td>{{numberWithPoints(row.precio_normal)}}</td>
+            <td>{{numberWithPoints(row.precio_oferta)}}</td>
+            <td>{{row.disponibilidad}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <button id="agregarboton" type="submit" class="btn btn-primary" (click)="add_product_cart(Producto.id_producto, Producto.nombre, Producto.marca, Producto.imagen)">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>

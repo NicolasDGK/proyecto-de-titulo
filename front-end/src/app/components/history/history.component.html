@@ -1,0 +1,60 @@
+<div class="container">
+  <h2 class="py-4">HISTORIAL</h2>
+  <div class="row justify-content-center py-2" *ngIf="total_cotizaciones > 0">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let Cotizacion of ListaCotizaciones"
+                           (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false"
+                           (click)="get_products(Cotizacion.id_cotizacion)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <strong>{{Cotizacion.fecha}}</strong>
+          </mat-panel-title>
+          <mat-panel-description>
+            $ {{numberWithPoints(Cotizacion.monto_total)}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <ul>
+                <li *ngFor="let producto of ListaProductos">
+                  <span><strong>{{producto.nombre_producto}} {{producto.marca_producto}} - X{{producto.multiplicador}}</strong> </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 px-5">
+              <button class="btn btn-primary justify-content-center" (click)="add_cotizacion_cart(Cotizacion.id_cotizacion)">AGREGAR AL CARRITO</button>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <!-- pagination -->
+  <div class="row justify-content-center" *ngIf="flag_pagination == true">
+    <div class="row pagination-products align-items-end">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <nav aria-label="Navigation products filter">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [ngClass]="flag_previous == false ? 'disabled' : ''">
+              <a class="page-link" (click)="previous_page()">Anterior</a>
+            </li>
+            <li class="page-item" [ngClass]="flag_next == false ? 'disabled' : ''">
+              <a class="page-link" (click)="next_page()">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center" *ngIf="total_cotizaciones == 0">
+    <div class="col-12 justify-content-center alert-cart">
+      <p>
+          <mat-icon>error_outline</mat-icon> ¡No hay cotizaciones!
+      </p>
+  </div>
+  </div>
+</div>

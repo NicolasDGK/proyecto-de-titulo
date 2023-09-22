@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <h2 class="px-5 py-1">DESTACADOS</h2>
+    <div class="row justify-content-md-center">
+        <div *ngFor="let producto of ListaProductos" class="card card-products col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="image-product text-center">
+                <a [routerLink]="['/details', producto.id_producto]" routerLinkActive="router-link-active">
+                    <img src="{{producto.imagen}}" class="card-img-top" alt="{{producto.nombre}}" (error) ="onImgError($event)">
+                </a>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{producto.nombre}}</h5>
+                <h6 class="card-title">{{producto.marca}}</h6>
+                <!-- Best Price -->
+                <div class="price mt-auto">
+                    <ng-container
+                        *ngIf="product_on_offer(producto.precio_oferta); then SalePrice; else NormalPrice">
+                    </ng-container>
+                    <ng-template #SalePrice>
+                        <div class="card-best-price">
+                            <p>$ {{numberWithPoints(producto.precio_oferta)}}</p>
+                        </div>
+                    </ng-template>
+                    <ng-template #NormalPrice>
+                        <div class="card-normal-price">
+                            <p>$ {{numberWithPoints(producto.precio_normal)}}</p>
+                        </div>
+                    </ng-template>
+                </div>
+                <!-- Button -->
+                <button class="btn btn-primary justify-content-center" (click)="add_product_cart(producto.id_producto, producto.nombre, producto.marca, producto.imagen)">AGREGAR</button>
+            </div>
+    </div>
+</div>

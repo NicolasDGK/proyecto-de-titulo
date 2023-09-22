@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <a class="navbar-brand" href="/" (click)="clear_search()">
+                <span style="color: #FFFFFF">SOLO</span><span style="color: #FF6F1E">MERCADOS</span>
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="btn btn-outline-light" href="https://www.google.cl/maps/search/supermercados+santa+isabel+jumbo+unimarc" role="button" aria-expanded="false"  (click)="clear_search()" title="Supermercados cercanos"><mat-icon> map</mat-icon></a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" role="button" data-display="static" aria-expanded="false" (click)="clear_search()">
+                        <mat-icon id="notification-icon" [style.color]="hasNotifications() ? 'red' : 'white'">notification_important</mat-icon>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="navbarDropdown">
+                      <ng-container *ngIf="isLoggedIn()">
+                        <a class="dropdown-item" *ngIf="notifications.length > 0">Notificaciones
+                          <div *ngFor="let notification of notifications" [innerHTML]="notification"></div>
+                        </a>
+                        <div *ngIf="notifications.length === 0">No hay notificaciones</div>
+                      </ng-container>
+                      <ng-container *ngIf="!isLoggedIn()">
+                        <a class="dropdown-item">Registrate o Inicia Sesión para recibir notificaciones</a>
+                      </ng-container>
+                    </div>
+                </li>        
+
+                <li class="nav-item">
+                    <a class="btn btn-outline-light" href="#" role="button" aria-expanded="false" [routerLink]="['/filter']" routerLinkActive="router-link-active" (click)="clear_search()"><mat-icon>filter_list</mat-icon></a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-light" href="#" role="button" aria-expanded="false" [routerLink]="['/cart']" routerLinkActive="router-link-active" (click)="clear_search()"><mat-icon id="cart">add_shopping_cart</mat-icon></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" role="button" data-display="static"  aria-expanded="false" (click)="clear_search()"><mat-icon id="login">account_circle</mat-icon></a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" *ngIf="isLoggedIn()">Bienvenido {{get_name_user()}}</a>
+                        <a class="dropdown-item" href="/login" *ngIf="!isLoggedIn()">Iniciar sesión</a>
+                        <div *ngIf="isLoggedIn()">
+                            <a class="dropdown-item" href="/history">Historial</a>
+                            <hr>
+                            <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <form class="d-flex" id="search_bar">
+                        <input 
+                          class="form-control" 
+                          type="search" 
+                          placeholder="Busque aquí el producto que desee..." 
+                          aria-label="Search" 
+                          id="search" 
+                          (keyup.enter)="search_product()"
+                          appClickedOutside
+                          (clickedOutside)="clear_search()">
+                        <a class="btn btn-light" role="button" aria-expanded="false" (click)="search_product()"><mat-icon id="icon_search">search</mat-icon></a>
+                    </form>
+                    <ul class="list-group" [hidden]="!showList">
+                        <li class="list-group-item py-1" *ngFor="let producto of Productos" [routerLink]="['/details', producto.id_producto]" routerLinkActive="router-link-active" (click)="clear_search()">
+                            <a>{{producto.nombre}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,87 @@
+.card {
+    display: flex;
+}
+
+.card-image {
+    width: 30rem;
+    height: 30rem;
+    margin: 10px auto;
+    display: flex;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-right: 5px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.card-body {
+    text-align: justify;
+}
+
+.features-product {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+h2{
+    margin-top: 10px;
+    margin-left: 4rem;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: bold;
+    color: #2D5C88;
+}
+
+h5 {
+    margin-bottom: 20px;
+    font-family: 'Arial';
+    font-weight: bold;
+    font-style: normal;
+}
+
+span {
+    font-family: 'Arial';
+}
+
+.btn-primary {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #FF6F1E;
+    border-color: #FF6F1E;
+}
+
+.alert-container {
+    position: absolute;
+    width: 25%;
+    min-width: 350px;
+    right: 1%;
+}
+
+.container-fluid {
+    position: relative;
+}
+
+.mat-icon {
+    font-size: 0.9rem;
+    padding-top: 0.4rem;
+}
+
+.subscribe-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+  
+.subscribe-checkbox input[type="checkbox"] {
+    margin-right: 10px; /* Add space between checkbox and label */
+}

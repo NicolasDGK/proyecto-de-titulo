@@ -1,0 +1,98 @@
+<div class="container-fluid cart px-5">
+  <div class="row row-title">
+    <h2>TU CARRITO</h2>
+  </div>
+  <div class="row" *ngIf="ProductsInCart.length > 0">
+    <div class="col-12 col-table">
+      <table class="table table-hover text-center caption-top">
+        <thead>
+          <tr>
+            <th scope="col">PRODUCTOS</th>
+            <th *ngFor="let super of ListaSupermercados"><img src="{{super.logo}}" alt="{{super.supermercado}}" class="logo" (error) ="onImgError($event)"></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider align-middle">
+          <tr *ngFor="let row of ListRow">
+            <th>
+              <div class="container">
+                <div class="row justify-content-start text-start">
+                  <div class="col-3">
+                    <a [routerLink]="['/details', row.id_producto]" routerLinkActive="router-link-active">
+                      <img src="{{row.imagen}}" alt="{{row.nombre}}" class="image-product img-thumbnail" (error) ="onImgError($event)">
+                    </a>
+                  </div>
+                  <div class="col-9 details-product">
+                    <h5>{{row.nombre}}</h5>
+                    <h6>{{row.marca}}</h6>
+                  </div>
+                </div>
+              </div>
+            </th>
+            <th class="prices-supermarket">
+              <div *ngIf="row.status_santa == 'no-distribuye'" class="{{row.status_santa}}"><h5>No distribuye</h5></div>
+              <div *ngIf="row.status_santa == 'no-stock'" class="{{row.status_santa}}"><h5>No stock</h5></div>
+              <div *ngIf="row.status_santa == 'normal' || row.status_santa == 'oferta'" class="{{row.status_santa}}"><h5>$ {{numberWithPoints(row.value_santa)}}</h5></div>
+            </th>
+            <th class="prices-supermarket">
+              <div *ngIf="row.status_jumbo == 'no-distribuye'" class="{{row.status_jumbo}}"><h5>No distribuye</h5></div>
+              <div *ngIf="row.status_jumbo == 'no-stock'" class="{{row.status_jumbo}}"><h5>No stock</h5></div>
+              <div *ngIf="row.status_jumbo == 'normal' || row.status_jumbo == 'oferta'" class="{{row.status_jumbo}}"><h5>$ {{numberWithPoints(row.value_jumbo)}}</h5></div>
+            </th>
+            <th class="prices-supermarket">
+              <div *ngIf="row.status_unimarc == 'no-distribuye'" class="{{row.status_unimarc}}"><h5>No distribuye</h5></div>
+              <div *ngIf="row.status_unimarc == 'no-stock'" class="{{row.status_unimarc}}"><h5>No stock</h5></div>
+              <div *ngIf="row.status_unimarc == 'normal' || row.status_unimarc == 'oferta'" class="{{row.status_unimarc}}"><h5>$ {{numberWithPoints(row.value_unimarc)}}</h5></div>
+            </th>
+            <th>
+              <div>
+                <nav aria-label="multiplier product">
+                  <ul class="pagination justify-content-center my-3">
+                    <li class="page-item" [ngClass]="row.multiplicador == 1 ? 'disabled' : ''">
+                      <a class="page-link" aria-label="Previous" (click)="subtract_multiplier(row.id_producto)">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item"><a class="page-link">{{row.multiplicador}}</a></li>
+                    <li class="page-item">
+                      <a class="page-link" aria-label="Next" (click)="add_multiplier(row.id_producto)">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </th>
+            <th>
+              <div>
+                <button class="btn btn-danger" (click)="delete_row(row.id_producto)">X</button>
+              </div>
+            </th>
+          </tr>
+          <tr class="table-group-divider">
+            <th>TOTAL</th>
+            <th [ngClass]="{'best-total-price': best_price(total_santa)}">$ {{numberWithPoints(total_santa)}}</th>
+            <th [ngClass]="{'best-total-price': best_price(total_jumbo)}">$ {{numberWithPoints(total_jumbo)}}</th>
+            <th [ngClass]="{'best-total-price': best_price(total_unimarc)}">$ {{numberWithPoints(total_unimarc)}}</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="ProductsInCart.length > 0">
+    <div class="col-12 text-center buttons">
+      <button class="btn btn-primary" id="clear_button" (click)="clear_cart()">LIMPIAR</button>
+      <button class="btn btn-primary" id="save_button" (click)="save_cart()" [disabled]="isLoggedIn() == false">GUARDAR</button>
+    </div>
+  </div>
+  <div class="row text-center" *ngIf="ProductsInCart.length == 0">
+    <div class="col-12 justify-content-center alert-cart">
+      <p>
+          <mat-icon>error_outline</mat-icon> ¡No hay productos en el carro!
+      </p>
+  </div>
+  </div>
+</div>

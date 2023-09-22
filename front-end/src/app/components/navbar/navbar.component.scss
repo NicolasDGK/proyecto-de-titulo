@@ -1,0 +1,67 @@
+nav {
+    box-sizing: border-box;
+    left: 0px;
+    top: 0px;
+    display: flex;
+    background: #2D5C88;
+    position: relative;
+}
+
+.btn-outline-light {
+    margin-right:5px;
+}  
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+.navbar-brand {
+    width: 286px;
+    height: 40px;
+    left: 20px;
+    top: 25px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 350px;
+}
+
+.mat-icon {
+    padding-top: 3px;
+}
+
+.collapse {
+    margin-top: 5px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.search {
+    position: relative;
+}
+
+li {
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.list-group li:hover {
+    background-color: #435a60;
+    color: white;
+}
+
+ul.list-group {
+    margin-top: 0;
+    padding-left: 0;
+    position: absolute;
+    z-index: 999;
+    max-height: 300px;
+    overflow-y: auto;
+}

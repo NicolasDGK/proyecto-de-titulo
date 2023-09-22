@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row justify-content-md-center my-5">
+        <div class="card col-sm-12 col-md-12 col-lg-6 col-lx-6">
+            <h2>REGISTRARSE</h2>
+            <form class="row g-3 needs-validation" [formGroup]="form_register" #form_reg="ngForm" (ngSubmit)="onSubmitRegister()" novalidate>
+                <div class="field form-outline mb-2">
+                    <label class="form-label" for="email_r">Email</label>
+                    <input type="email" id="email_r" class="form-control" placeholder="Ingrese su email"
+                        formControlName="email_r" [ngClass]="{
+                        'is-invalid' : form_register.controls['email_r'].invalid && (form_register.controls['email_r'].dirty || form_register.controls['email_r'].touched),
+                        'is-valid' : form_register.controls['email_r'].valid && (form_register.controls['email_r'].dirty || form_register.controls['email_r'].touched)
+                    }" />
+                    <div class="alert alert-danger mt-1 mb-1" *ngIf="form_register.controls['email_r'].invalid && (form_register.controls['email_r'].dirty || form_register.controls['email_r'].touched)">
+                        <div *ngIf="form_register.controls['email_r'].hasError('required')">Este campo es obligatorio</div>
+                        <div *ngIf="form_register.controls['email_r'].hasError('email')">Email inválido</div>
+                    </div>
+                </div>
+
+                <div class="field form-outline mb-2">
+                    <label class="form-label" for="nombre">Nombre y Apellido</label>
+                    <input type="text" id="nombre" class="form-control" placeholder="Ingrese su nombre" formControlName="nombre" [ngClass]="{
+                        'is-invalid' : form_register.controls['nombre'].invalid && (form_register.controls['nombre'].dirty || form_register.controls['nombre'].touched),
+                        'is-valid' : form_register.controls['nombre'].valid && (form_register.controls['nombre'].dirty || form_register.controls['nombre'].touched)
+                    }" />
+                    <div class="alert alert-danger mt-1" *ngIf="form_register.controls['nombre'].invalid && (form_register.controls['nombre'].dirty || form_register.controls['nombre'].touched)">
+                        <div *ngIf="form_register.controls['nombre'].hasError('required')">Este campo es obligatorio</div>
+                    </div>
+                </div>
+
+                <div class="field form-outline mb-2">
+                    <label class="form-label" for="password_r">Contraseña</label>
+                    <input type="password" id="password_r" class="form-control" placeholder="**********" formControlName="password_r" autocomplete="on" [ngClass]="{
+                        'is-invalid' : form_register.controls['password_r'].invalid && (form_register.controls['password_r'].dirty || form_register.controls['password_r'].touched),
+                        'is-valid' : form_register.controls['password_r'].valid && (form_register.controls['password_r'].dirty || form_register.controls['password_r'].touched)
+                    }" />
+                    <div class="alert alert-danger mt-1" *ngIf="form_register.controls['password_r'].invalid && (form_register.controls['password_r'].dirty || form_register.controls['password_r'].touched)">
+                        <div *ngIf="form_register.controls['password_r'].hasError('required')">Este campo es obligatorio</div>
+                        <div *ngIf="form_register.controls['password_r'].hasError('minlength')">La contraseña debe tener como mínimo 8 caracteres</div>
+                    </div>
+                </div>
+
+                <div class="col d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-block mb-4" id="button_register" [disabled]="!form_register.valid">REGISTRARSE</button>
+                </div>
+            </form>
+        </div>
+        <div class="card col-sm-12 col-md-12 col-lg-6 col-lx-6">
+            <h2>INICIAR SESIÓN</h2>
+            <form class="row g-3 needs-validation" [formGroup]="form_login" #form_log="ngForm" (submit)="onSubmitLogin()" novalidate>
+                <!-- Email input -->
+                <div class="field form-outline mb-2">
+                    <label class="form-label" for="email_l">Email</label>
+                    <input type="email" id="email_l" class="form-control" placeholder="Ingrese su email" formControlName="email_l" [ngClass]="{
+                        'is-invalid' : form_login.controls['email_l'].invalid && (form_login.controls['email_l'].dirty || form_login.controls['email_l'].touched),
+                        'is-valid' : form_login.controls['email_l'].valid && (form_login.controls['email_l'].dirty || form_login.controls['email_l'].touched)
+                    }" />
+                    <div class="alert alert-danger mt-1 mb-1" *ngIf="form_login.controls['email_l'].invalid && (form_login.controls['email_l'].dirty || form_login.controls['email_l'].touched)">
+                        <div *ngIf="form_login.controls['email_l'].hasError('required')">Este campo es obligatorio</div>
+                        <div *ngIf="form_login.controls['email_l'].hasError('email')">Email inválido</div>
+                    </div>
+                </div>
+                <!-- Password input -->
+                <div class="field form-outline mb-2">
+                    <label class="form-label" for="password_l">Contraseña</label>
+                    <input type="password" id="password_l" class="form-control" placeholder="**********" formControlName="password_l" autocomplete="on" [ngClass]="{
+                        'is-invalid' : form_login.controls['password_l'].invalid && (form_login.controls['password_l'].dirty || form_login.controls['password_l'].touched),
+                        'is-valid' : form_login.controls['password_l'].valid && (form_login.controls['password_l'].dirty || form_login.controls['password_l'].touched)
+                    }" />
+                    <div class="alert alert-danger mt-1" *ngIf="form_login.controls['password_l'].invalid && (form_login.controls['password_l'].dirty || form_login.controls['password_l'].touched)">
+                        <div *ngIf="form_login.controls['password_l'].hasError('required')">Este campo es obligatorio</div>
+                        <div *ngIf="form_login.controls['password_l'].hasError('minlength')">La contraseña debe tener como mínimo 8 caracteres</div>
+                    </div>
+                </div>
+                <!-- Submit button -->
+                <div class="col d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-block mb-4" id="button_login" [disabled]="!form_log.valid">INGRESAR</button>
+                </div>
+            </form>
+        </div>              
+    </div>
+</div>
