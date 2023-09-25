@@ -349,9 +349,9 @@ export class CartComponent implements OnInit {
   get_date() {
     var new_fecha = new Date();
     var dd = String(new_fecha.getDate()).padStart(2, '0');
-    var mm = String(new_fecha.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var mm = String(new_fecha.getMonth() + 1).padStart(2, '0');
     var yyyy = String(new_fecha.getFullYear());
-    return mm + '/' + dd + '/' + yyyy;
+    return dd + '/' + mm + '/' + yyyy; 
   }
   
   values_query(id_cotizacion:number):string {
@@ -368,96 +368,6 @@ export class CartComponent implements OnInit {
     return query;
   }
   
-  /*save_cart() {
-    Swal.fire({
-      icon: 'warning',
-      title: '¡Cuidado!',
-      text: 'Si aceptas finalizará tu cotización actual.',
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#FF6F1E'
-    }).then((result) => {
-      if (result.isConfirmed) {    
-        var monto_total = this.get_best_total_price();
-        var fecha = this.get_date();
-        var token = localStorage.getItem('token') ?? '';
-        var decodetoken = this.helper.decodeToken(token);
-        var id_usuario: number = decodetoken['data']['id_usuario'];
-  
-        // Create the cotizacion and handle the response
-        this.http.PostCotizacion(id_usuario, monto_total, fecha).subscribe(cotizacionResponse => {
-          var id_cotizacion = cotizacionResponse['item']['id_cotizacion'];
-          console.log('Cotizacion ID:', id_cotizacion); // Add this log
-  
-          // Now that you have the id_cotizacion, you can create cotizaciones_productos
-          var values: string = this.values_query(id_cotizacion);
-          console.log('Cotizacion Productos Values:', values); // Add this log
-  
-          // Create cotizaciones_productos and handle the response
-          this.http.PostCotizacionProductos(values).subscribe(cotizacionProductosResponse => {
-            console.log('Cotizacion Productos Response:', cotizacionProductosResponse); // Add this log
-  
-            Swal.fire({
-              icon: 'success',
-              title: '¡Cotización guardada!',
-              text: 'La cotización se guardó exitosamente.',
-              confirmButtonColor: '#FF6F1E'
-            }).then(a => {
-              this.remove_localstorage();
-              this.router.navigate(['history']);
-            });
-          });
-        });
-      }
-    });
-  }
-
-  /*save_cart() {
-    Swal.fire({
-      icon: 'warning',
-      title: '¡Cuidado!',
-      text: 'Si aceptas finalizará tu cotización actual.',
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#FF6F1E'
-    }).then((result) => {
-      if (result.isConfirmed) {    
-        var monto_total = this.get_best_total_price();
-        var fecha = this.get_date();
-        var token = localStorage.getItem('token') ?? '';
-        var decodetoken = this.helper.decodeToken(token);
-        var id_usuario:number = decodetoken['data']['id_usuario'];
-  
-        // Step 1: Save the cotizacion
-        this.http.PostCotizacion(id_usuario, monto_total, fecha).subscribe(datos => {
-          var id_cotizacion = datos['item']['id_cotizacion'];
-  
-          // Step 2: Prepare data for cotizaciones_productos
-          var values = this.prepareCotizacionesProductosData(id_cotizacion);
-  
-          // Step 3: Save cotizaciones_productos
-          this.http.PostCotizacionProductos(values).subscribe(() => {
-            // Step 4: Clear the cart and navigate to history
-            this.remove_localstorage();
-            this.router.navigate(['history']);
-          });
-        });
-      }
-    });
-  }
-
-  prepareCotizacionesProductosData(id_cotizacion: number): string {
-    var query = "";
-    for(let i = 0; i < this.ListRow.length; i++) {
-      query = query + `(${id_cotizacion}, ${this.ListRow[i].id_producto}, ${this.ListRow[i].multiplicador})`;
-      if (i < this.ListRow.length - 1) {
-        query = query + ', ';
-      } else {
-        query = query + ';';
-      }
-    }
-    return query;
-  }*/
 
   save_cart() {
     Swal.fire({
