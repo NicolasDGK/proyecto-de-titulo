@@ -69,4 +69,28 @@
       </div>
     </div>
   </div>
+  <div class="row mx-5 my-4">
+    <h2>Historial de Precios</h2>
+    <div class="col-12">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">Supermercado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Precio Normal</th>
+            <th scope="col">Oferta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of ListaPriceHistory">
+            <td>{{ row.supermercado }}</td>
+            <td>{{ convert_date(row.fecha) }}</td>
+            <td>{{ numberWithPoints(row.precio_normal) }}</td>
+            <td>{{ numberWithPoints(row.precio_oferta) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
 </div>

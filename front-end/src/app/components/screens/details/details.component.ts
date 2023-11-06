@@ -12,7 +12,6 @@ import { UsuariosPreferenciasService } from 'src/app/services/usuarios-preferenc
 import { NotificationService } from 'src/app/services/notification.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -25,6 +24,9 @@ export class DetailsComponent implements OnInit {
   previousSupermarketData: SupermercadosProductos[] = []; // Track previous data
 
   subscribeToProduct: boolean = false; // Initialize the checkbox value
+
+  ListaPriceHistory = new Array<SupermercadosProductos>();
+
 
   isLoggedIn():boolean {
     return this.http_login.loggedIn();
@@ -81,13 +83,12 @@ export class DetailsComponent implements OnInit {
 
         // Fetch and check all products for price decrease
         this.fetchAndCheckAllProductsForPriceDecrease();
-
         
+
       });
     });
 
     
-
     this.cambioDeRuta();
   }
 
@@ -110,38 +111,7 @@ export class DetailsComponent implements OnInit {
   }
 
   notificationMessage: string = '';
-  /*checkForPriceDecrease(productId: number, userId: number) {
-    this.http.GetLowestPriceProducto(productId).subscribe((response: any) => {
-      const currentLowestPrice = response.currentLowestPrice;
-      console.log(`Checking price for Product ${productId}...`);
-      console.log(`Lowest Price: ${currentLowestPrice}`);
-      const productDetailURL = `/details/${productId}`;
-      
-      // Fetch the product name
-      this.http.GetProductoName(productId).subscribe((response:any) => {
-        const productName = response.productName;
-        console.log(`Product Name: ${productName}`);
-        if (currentLowestPrice !== null) {
-          // Compare the current lowest price with the saved lowest price.
-          this.httpProduct.GetSavedLowestPrice(productId, userId).subscribe(savedLowestPrice => {
-            if (currentLowestPrice < savedLowestPrice) {
-              console.log(`Saved Lowest Price from Usuarios_Preferencias: ${savedLowestPrice}`);
-              const productDetailURL = `/details/${productId}`; // Adjust the URL as needed
-              const notificationMessage = this.createSafeHtmlMessage(productName, productDetailURL);
-              // Trigger a notification here with the safe HTML message
-              this.notificationService.addNotification(notificationMessage);
-              // Update the saved lowest price with the current save price.
-              //this.http.UpdateLowestPriceForProduct(productId, currentLowestPrice).subscribe(() => {
-              //  console.log(`Saved lowest price updated for Product ${productId}.`);
-              //});
-            }
-          });
-        } else {
-          console.log(`Could not retrieve the current lowest price for Product ${productId}.`);
-        }
-      });
-    });
-  }*/
+  
   checkForPriceDecrease(productId: number, userId: number) {
     console.log(`Checking price for Product ${productId} for User ${userId}...`);
     this.http.GetLowestPriceProducto(productId).subscribe((response: any) => {
@@ -227,29 +197,18 @@ export class DetailsComponent implements OnInit {
       }
     });
   }
-  
-  
-  
 
   get_product():void {
     this.httpProduct.GetProducto(this.id_producto).subscribe(datos => {
       this.Producto = datos[0];
     })
   }
-  
-  /*get_list_supermarket(): void {
-    this.ListaSuperProducto = [];
-    this.httpSuperProduct.GetListSuperProductsId(this.id_producto).subscribe(datos =>{
-      for(let i=0; i<datos.items.length; i++) {
-        this.ListaSuperProducto.push(datos.items[i]);
-        this.ListaSuperProducto[i].fecha = this.convert_date(datos.items[i].fecha)
-      }
-    })
-  }*/
 
-  get_list_supermarket(): void {
+  /*get_list_supermarket(): void {
+    console.log('ID PRODUCT TO GET THE PRICES:', this.id_producto);
     this.ListaSuperProducto = [];
     this.httpSuperProduct.GetListSuperProductsId(this.id_producto).subscribe((datos) => {
+      console.log('datos superproduct:', datos)
       for (let i = 0; i < datos.items.length; i++) {
         const item = datos.items[i];
         item.fecha = this.convert_date(item.fecha);
@@ -264,8 +223,11 @@ export class DetailsComponent implements OnInit {
           this.previousSupermarketData.push(item); // Store this item as previous data
         }
       }
+      
+      this.GetListHistorialId();
     });
   }
+  
   isSameSupermarketData(item1: SupermercadosProductos, item2: SupermercadosProductos): boolean {
     return (
       item1.supermercado === item2.supermercado &&
@@ -274,8 +236,71 @@ export class DetailsComponent implements OnInit {
       item1.precio_oferta === item2.precio_oferta &&
       item1.disponibilidad === item2.disponibilidad
     );
+  }*/
+
+  get_list_supermarket(): void {
+    console.log('ID PRODUCT TO GET THE PRICES:', this.id_producto);
+    const newSupermarketData: SupermercadosProductos[] = [];
+  
+    this.httpSuperProduct.GetListSuperProductsId(this.id_producto).subscribe((datos) => {
+      console.log('datos superproduct:', datos);
+  
+      for (let i = 0; i < datos.items.length; i++) {
+        const item = datos.items[i];
+        item.fecha = this.convert_date(item.fecha);
+  
+        // Check if the item data is the same as the previous data
+        const isSameData = this.isSameSupermarketData(item);
+  
+        if (!isSameData) {
+          newSupermarketData.push(item);
+        }
+      }
+  
+      // Update the previousSupermarketData array
+      this.previousSupermarketData = this.previousSupermarketData.concat(newSupermarketData);
+  
+      // Update the ListaSuperProducto with unique items
+      this.ListaSuperProducto = this.ListaSuperProducto.concat(newSupermarketData);
+      
+      this.GetListHistorialId();
+    });
   }
   
+  isSameSupermarketData(item: SupermercadosProductos): boolean {
+    return this.previousSupermarketData.some((prevItem) =>
+      prevItem.supermercado === item.supermercado &&
+      prevItem.id_producto === item.id_producto &&
+      prevItem.precio_oferta === item.precio_oferta &&
+      prevItem.precio_normal === item.precio_normal &&
+      prevItem.disponibilidad === item.disponibilidad
+    );
+  }
+  
+
+  
+  GetListHistorialId(): void {
+    console.log('ListPriceHistory start:', this.ListaPriceHistory);
+    console.log('ID PRODUCT TO GET THE PRICE HISTORY:', this.id_producto);
+    this.ListaPriceHistory = [];
+    this.httpSuperProduct.GetListHistorialId(this.id_producto).subscribe(
+        (datos) => {
+            console.log('Data received:', datos);
+            for (let i = 0; i < datos.items.length; i++) {
+                const item = datos.items[i];
+                //item.fecha = this.convert_date(item.fecha);
+                this.ListaPriceHistory.push(item);
+            }
+        },
+        (error) => {
+            console.error('HTTP request error:', error);
+            // Handle the error as needed, e.g., display an error message to the user.
+        }
+    );
+  }
+
+
+
   onImgError(event:any) { 
     event.target.src = '../../../assets/icon-alert.png';
   }
@@ -363,6 +388,9 @@ export class DetailsComponent implements OnInit {
       this.id_producto = params['id'];
       this.get_product();
       this.get_list_supermarket();
-   });
+    });
   }
+   
+
+
 }

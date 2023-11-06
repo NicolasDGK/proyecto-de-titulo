@@ -23,6 +23,9 @@ const Producto = require('./Productos/get_producto');
 const ListProducto = require('./Productos/get_list_products');
 const ListCategorias = require('./Categorias/get_list_categories');
 const ListSuperProducts = require('./Supermercados_Productos/get_list_product_id');
+
+const ListHistorial = require('./PrecioHistorico/get_precio_historial')
+
 const Categoria = require('./Categorias/get_category');
 const ListProductosCategoria = require('./Productos/get_list_products_category');
 const ListProductsBestPrice = require('./Productos/get_list_products_best_price');
@@ -46,6 +49,12 @@ const TypesFilter = require('./Filter/post_types_filter');
 const InsertarCotizacion = require('./Cotizaciones/post_cotizacion');
 const InsertarCotizacionProductos = require('./CotizacionesProductos/post_cotizaciones_productos');
 
+//const GetCotizacionesTemplate  = require('./Cotizaciones/get_cotizaciones_template');
+const { getTemplateById } = require('./Cotizaciones/get_template_by_id');
+
+const { GetSupermarketsForProduct } = require('./Supermercados_Productos/get_list_product_id');
+
+
 
 const config = {
   hostname: "127.0.0.1",
@@ -54,6 +63,9 @@ const config = {
 
 app.use(cors());
 
+app.get('/SuperForProduct/:id', GetSupermarketsForProduct);
+
+app.get('/Cotizaciones/get_template_by_id/:idTemplate', getTemplateById);
 
 app.use('/usuarios-preferencias', getPreferenciaRouter);
 app.use('/usuarios-preferencias', postPreferenciaRouter);
@@ -62,7 +74,35 @@ app.use('/usuarios_preferencias', fetchPreferenciaRouter);
 app.use('/usuarios-preferencias', getSavedLowestPriceRouter);
 
 //app.use('/notificaciones/get/:userId', getNotificationsRouter);
-app.use('/notificaciones/post/:userId', postNotificationsRouter);
+//app.use('/notificaciones/post/:userId', postNotificationsRouter);
+app.post('/notificaciones', async (req:any, res:any) => {
+  try {
+    // Extract notification data from the request body
+    const { id_usuario, id_producto, message } = req.body;
+
+    // Check for existing notification in the database
+    const checkExistingQuery = 'SELECT * FROM notificaciones WHERE id_usuario = $1 AND id_producto = $2';
+    const existingNotification = await pool.query(checkExistingQuery, [id_usuario, id_producto]);
+
+    if (existingNotification.rows.length === 0) {
+      // No existing notification found, proceed to insert
+      const insertQuery = 'INSERT INTO notificaciones (id_usuario, id_producto, message) VALUES ($1, $2, $3)';
+      const insertValues = [id_usuario, id_producto, message];
+      await pool.query(insertQuery, insertValues);
+
+      // Respond with success message or status
+      res.status(200).json({ message: 'Notification added successfully' });
+    } else {
+      // Existing notification found, return a specific message or status code
+      res.status(409).json({ message: 'Notification already exists' });
+    }
+  } catch (error) {
+    console.error('Error adding notification:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 app.get('/notificaciones/:userId', async (req:any, res:any) => {
   try {
@@ -116,6 +156,9 @@ app.get('/Producto/:id', Producto.GetProducto);
 app.get('/ListProductos', ListProducto.GetListProductos);
 app.get('/ListCategorias', ListCategorias.GetListCategorias);
 app.get('/ListSupermercadosProductos/:id', ListSuperProducts.GetListSuperProductsId);
+
+app.get('/PrecioHistorico/:id', ListHistorial.GetListHistorialId);
+
 app.get('/Categoria/:id', Categoria.GetCategory);
 app.get('/ProductosCategoria/:id', ListProductosCategoria.GetListProductosCategoria);
 app.get('/ListProductsBestPrice', ListProductsBestPrice.GetListProductsBestPrice);
@@ -180,6 +223,8 @@ app.delete('/usuarios-preferencias/delete', async (req:any, res:any) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+//app.get('/Cotizaciones/get_cotizaciones_template/:id_template', GetCotizacionesTemplate);
 
 // ... Define other routes and middleware ...
 

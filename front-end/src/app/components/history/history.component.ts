@@ -46,6 +46,7 @@ export class HistoryComponent implements OnInit {
         this.ListaCotizaciones.push(datos[i]);
         this.ListaCotizaciones[i].fecha = this.convert_date(datos[i].fecha);
       }
+      console.log('Cotizaciones Loaded:', this.ListaCotizaciones);
     })
   }
   
@@ -80,6 +81,7 @@ export class HistoryComponent implements OnInit {
       for(let i=0; i<datos.length; i++) {
         this.ListaProductos.push(datos[i]);
       }
+      console.log('CotizacionesProductos Loaded:', this.ListaProductos);
     })
   }
   

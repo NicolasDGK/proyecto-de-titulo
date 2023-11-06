@@ -97,6 +97,19 @@ export class ProductosService {
     // Make an HTTP GET request to the backend to retrieve the list of subscribed products
     return this.http.get<number[]>(`/usuarios-preferencias/${userId}/subscribed-products`);
   }
+
+  getTemplateById(templateId: number): Observable<any> {
+    const apiUrl = `${environment.hostname}/Cotizaciones/get_template_by_id/${templateId}`;
+    return this.http.get(apiUrl);
+  }
+
+  GetCotizacionesProductos(id_cotizacion:number):Observable<any> {
+    return this.http.get(`${environment.hostname}/CotizacionesProductos/${id_cotizacion}`);
+  }
+
+  getSupermarketsForProduct(id:number):Observable<any> {
+    return this.http.get(`${environment.hostname}/SuperForProduct/${id}`);
+  }
   
 
 }

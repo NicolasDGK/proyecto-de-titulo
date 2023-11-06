@@ -31,6 +31,28 @@ const GetListSuperProductsId = (req:any, res:any) => {
     })
 }
 
+const GetSupermarketsForProduct = (req:any, res:any) => {
+    const productId = parseInt(req.params.id);
+    let supermarketsForProduct = new Array<SupermercadosProductos>();
+    
+    let query = `SELECT sp.id_supermercado, s.supermercado, s.logo
+                FROM supermercados_productos AS sp
+                JOIN supermercados AS s ON s.id_supermercado = sp.id_supermercado
+                WHERE sp.id_producto = $1`;
+    
+    pool.query(query, [productId], (err:any, response:any) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ status: 'error', message: 'Internal server error' });
+        }
+        
+        supermarketsForProduct = response.rows;
+        console.log(supermarketsForProduct);
+        res.json({ status: 'ok', items: supermarketsForProduct });
+    });
+};
+
 module.exports = {
-    GetListSuperProductsId
+    GetListSuperProductsId,
+    GetSupermarketsForProduct
 }

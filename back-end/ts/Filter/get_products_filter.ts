@@ -32,28 +32,30 @@ const GetProductsFilter = (req:any, res:any) => {
     
     let Producto:ProductBestPrice;
     let ListProductos = new Array<ProductBestPrice>();
-    let query = `SELECT p.id_producto, 
+    let query = `SELECT *
+                FROM (
+                    SELECT p.id_producto, 
                         p.nombre, 
                         m.marca, 
                         p.imagen,
                         MIN(CAST(REPLACE(sp.precio_normal, 'NA', '999999999') AS INTEGER)) AS precio_normal, 
                         MIN(CAST(REPLACE(sp.precio_oferta, 'NA', '999999999') AS INTEGER)) AS precio_oferta
-                 FROM supermercados_productos AS sp
-                 JOIN productos AS p ON sp.id_producto = p.id_producto
-                 JOIN marcas AS m ON m.id_marca = p.marca
-                 JOIN categorias AS c ON c.id_categoria = p.categoria
-                 JOIN tipos AS t ON t.id_tipo = p.tipo_producto
-                 WHERE p.nombre <> 'NA' AND 
-                       p.nombre <> 'E' AND
-                       p.categoria = COALESCE($1, p.categoria) AND
-                       p.marca = COALESCE($2, p.marca) AND
-                       p.tipo_producto = COALESCE($3, p.tipo_producto) AND
-                       (REPLACE(sp.precio_normal, 'NA', '-1')::INTEGER BETWEEN $4 AND $5 OR 
-                       REPLACE(sp.precio_oferta, 'NA', '-1')::INTEGER BETWEEN $4 AND $5)
-                 GROUP BY p.id_producto, m.marca, p.nombre, p.imagen
-                 ORDER BY p.nombre
-                 LIMIT 20
-                 OFFSET $6;`
+                    FROM supermercados_productos AS sp
+                    JOIN productos AS p ON sp.id_producto = p.id_producto
+                    JOIN marcas AS m ON m.id_marca = p.marca
+                    JOIN categorias AS c ON c.id_categoria = p.categoria
+                    JOIN tipos AS t ON t.id_tipo = p.tipo_producto
+                    WHERE p.nombre <> 'NA' AND 
+                        p.nombre <> 'E' AND
+                        p.categoria = COALESCE($1, p.categoria) AND
+                        p.marca = COALESCE($2, p.marca) AND
+                        p.tipo_producto = COALESCE($3, p.tipo_producto) AND
+                        (REPLACE(sp.precio_normal, 'NA', '-1')::INTEGER BETWEEN $4 AND $5 OR 
+                        REPLACE(sp.precio_oferta, 'NA', '-1')::INTEGER BETWEEN $4 AND $5)
+                    GROUP BY p.id_producto, m.marca, p.nombre, p.imagen
+                ) AS subquery
+                ORDER BY LEAST(precio_normal, precio_oferta)
+                LIMIT 20 OFFSET $6;`
                  
 pool.query(query, [categoria, marca, tipo, precio_inicial, precio_final, offset], (err:any, respuesta:any) => {
         if(err) {

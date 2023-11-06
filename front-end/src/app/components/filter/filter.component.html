@@ -72,9 +72,14 @@
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{producto.nombre}}</h5>
                             <h6 class="card-title">{{producto.marca}}</h6>
+                            <div class="availability">
+                                <span *ngFor="let supermarket of producto.supermarkets">
+                                    <img [src]="supermarket.logo" class="supermarket-icon" alt="{{supermarket.supermercado}}">
+                                </span>
+                            </div>
                             <!-- Best Price -->
                             <div class="price mt-auto">
-                                <ng-container
+                                <ng-container 
                                     *ngIf="product_on_offer(producto.precio_oferta); then SalePrice; else NormalPrice">
                                 </ng-container>
                                 <ng-template #SalePrice>
@@ -87,6 +92,7 @@
                                         <p>$ {{numberWithPoints(producto.precio_normal)}}</p>
                                     </div>
                                 </ng-template>
+                                
                             </div>
                             <!-- Button -->
                             <button class="btn btn-primary justify-content-center" (click)="add_product_cart(producto.id_producto, producto.nombre, producto.marca, producto.imagen)">AGREGAR</button>

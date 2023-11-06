@@ -6,6 +6,7 @@ import { Marca } from 'src/app/interfaces/marca';
 import { Tipo } from 'src/app/interfaces/tipo';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -46,8 +47,27 @@ export class FilterComponent implements OnInit {
       for(let i=0; i<datos.items.length; i++) {
         this.ListCategorias.push(datos.items[i]);
       }
+      
     })
   }
+
+  addSupermarketInfo() {
+    const observables = this.ListProductos.map(product => {
+      return this.http_filter.getSupermarketsForProduct(product.id_producto);
+    });
+  
+    forkJoin(observables).subscribe((responses: any[]) => {
+      console.log('Responses from API:', responses);
+  
+      responses.forEach((data: any, index: number) => {
+        console.log('Data for product ' + index + ':', data);
+        this.ListProductos[index].supermarkets = data.items;
+      });
+  
+      console.log('ListaProductos with supermarkets:', this.ListProductos);
+    });
+  }
+
 
   product_on_offer(precio_oferta:string) {
     if (precio_oferta == '999999999') {
@@ -59,6 +79,7 @@ export class FilterComponent implements OnInit {
   numberWithPoints(precio:string) {
     return precio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
+
 
   selectCategory(id_category:any) {   
     this.value_category = id_category;
@@ -140,6 +161,7 @@ export class FilterComponent implements OnInit {
       for(let i=0; i<datos.items.length; i++) {
         this.ListProductos.push(datos.items[i]);
       }
+      this.addSupermarketInfo();
     })
   }
   

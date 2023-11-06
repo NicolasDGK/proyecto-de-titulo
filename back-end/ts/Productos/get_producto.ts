@@ -25,23 +25,6 @@ const GetProducto = (req: any, res: any) => {
     })
 }
 
-/*const GetProductoName = async (productId: number): Promise<string | null> => {
-    try {
-      // Query the database to fetch the product name based on id_producto
-      const query = 'SELECT nombre AS product_name FROM productos WHERE id_producto = $1';
-      const result = await pool.query(query, [productId]);
-  
-      if (result.rows.length === 1) {
-        const productName = result.rows[0].product_name;
-        return productName;
-      } else {
-        return null; // Product not found
-      }
-    } catch (error) {
-      console.error('Error fetching product name:', error);
-      return null; // Internal server error
-    }
-  };*/
 
   const GetProductoName = async (productId: number): Promise<string | null> => {
     try {
@@ -67,12 +50,10 @@ const GetLowestPriceProducto = (req: any, res: any) => {
 
     // Write a SQL query to fetch the current lowest price for the product.
     const query = `
-        SELECT
-            MIN(COALESCE(precio_oferta, precio_normal)) AS lowest_price
-        FROM
-            supermercados_productos
-        WHERE
-            id_producto = $1
+      SELECT MIN(COALESCE(NULLIF(precio_oferta, 'NA'), precio_normal)) AS lowest_price
+      FROM supermercados_productos
+      WHERE id_producto = $1
+      AND (precio_oferta != 'NA' OR precio_normal != 'NA');
     `;
 
     pool.query(query, [productId], (err: any, response: any) => {

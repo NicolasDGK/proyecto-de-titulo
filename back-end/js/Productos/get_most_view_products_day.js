@@ -20,8 +20,27 @@ const GetMostViewProductsDay = (req, res) => {
                        sp.precio_normal <> 'NA'
                  GROUP BY p.id_producto, m.marca, p.nombre, p.imagen
                  ORDER BY COUNT(p.nombre) DESC
-                 LIMIT 40;`; */
+                 LIMIT 40;`;
     let query = `SELECT DISTINCT ON (m.marca)
+                    p.id_producto,
+                    m.marca,
+                    p.nombre,
+                    p.imagen,
+                    sp.precio_normal AS precio_normal,
+                    sp.precio_oferta AS precio_oferta
+                FROM
+                    productos AS p
+                JOIN
+                    supermercados_productos AS sp ON sp.id_producto = p.id_producto
+                JOIN
+                    marcas AS m ON m.id_marca = p.marca
+                WHERE
+                    sp.precio_oferta <> 'NA' AND
+                    sp.precio_normal <> 'NA' AND
+                    CAST(sp.precio_oferta AS INTEGER) < CAST(sp.precio_normal AS INTEGER)
+                ORDER BY m.marca, RANDOM()
+                LIMIT 40;`*/
+    let query = `SELECT 
                     p.id_producto,
                     m.marca,
                     p.nombre,
@@ -35,10 +54,25 @@ const GetMostViewProductsDay = (req, res) => {
                 JOIN 
                     marcas AS m ON m.id_marca = p.marca
                 WHERE 
-                    sp.precio_oferta <> 'NA' AND 
-                    sp.precio_normal <> 'NA' AND
-                    CAST(sp.precio_oferta AS INTEGER) < CAST(sp.precio_normal AS INTEGER)
-                ORDER BY m.marca, RANDOM()
+                    EXISTS (
+                        SELECT 1
+                        FROM supermercados_productos AS sp1
+                        WHERE sp1.id_producto = p.id_producto AND sp1.id_supermercado = 1
+                    )
+                    AND EXISTS (
+                        SELECT 1
+                        FROM supermercados_productos AS sp2
+                        WHERE sp2.id_producto = p.id_producto AND sp2.id_supermercado = 2
+                    )
+                    AND EXISTS (
+                        SELECT 1
+                        FROM supermercados_productos AS sp3
+                        WHERE sp3.id_producto = p.id_producto AND sp3.id_supermercado = 3
+                    )
+                    AND sp.precio_oferta <> 'NA' 
+                    AND sp.precio_normal <> 'NA' 
+                    AND CAST(sp.precio_oferta AS INTEGER) < CAST(sp.precio_normal AS INTEGER)
+                ORDER BY RANDOM()
                 LIMIT 40;`;
     pool.query(query, (err, respuesta) => {
         if (err) {

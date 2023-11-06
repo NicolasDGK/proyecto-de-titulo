@@ -44,4 +44,9 @@ export class FilterService {
   GetTotalFilter(categoria:any, marca:any, tipo:any, precio_inicial:any, precio_final:any):Observable<any> {
     return this.http.get(`${environment.hostname}/TotalFilter/${categoria}/${marca}/${tipo}/${precio_inicial}/${precio_final}`);
   }
+
+  getSupermarketsForProduct(id: number): Observable<any> {
+    return this.http.get(`${environment.hostname}/SuperForProduct/${id}`);
+  }
+
 }

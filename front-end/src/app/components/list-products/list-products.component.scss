@@ -11,6 +11,15 @@ img {
     margin: 10px auto;
 }
 
+h1 {
+    margin: 7px;
+    color: #343a40;
+    font-size: 14px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: bold;
+}
+
 h6 {
     margin: 0px;
     color: #343a40;
@@ -62,4 +71,15 @@ h2{
     font-style: normal;
     font-weight: bold;
     color: #2D5C88;
+}
+
+.supermarket-icons {
+    display: flex;
+    align-items: center;
+}
+  
+.supermarket-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 20px; /* Adjust this margin as needed */
 }

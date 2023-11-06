@@ -11,6 +11,7 @@ const PostCotizacion = (req:any, res:any) => {
     pool.query(query, [req.body.id_usuario, req.body.monto_total, req.body.fecha], (err:any, respuesta:any) => {
         if(err) {
             console.log(err);
+            res.status(500).json({ error: 'Internal server error' });
             return;
         }
         

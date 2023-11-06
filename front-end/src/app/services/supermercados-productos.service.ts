@@ -24,4 +24,10 @@ export class SupermercadosProductosService {
   GetListSuperProductsId(id:number):Observable<any> {
     return this.http.get(`${environment.hostname}/ListSupermercadosProductos/${id}`);
   }
+
+  GetListHistorialId(id:number):Observable<any>{
+
+    return this.http.get(`${environment.hostname}/PrecioHistorico/${id}`);
+  }
+
 }

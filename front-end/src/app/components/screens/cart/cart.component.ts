@@ -346,6 +346,14 @@ export class CartComponent implements OnInit {
     return Math.min(this.total_santa, this.total_jumbo, this.total_unimarc);
   }
   
+  /*get_date() {
+    var new_fecha = new Date();
+    var dd = String(new_fecha.getDate()).padStart(2, '0');
+    var mm = String(new_fecha.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = String(new_fecha.getFullYear());
+    return mm + '/' + dd + '/' + yyyy;
+  }*/
+
   get_date() {
     var new_fecha = new Date();
     var dd = String(new_fecha.getDate()).padStart(2, '0');
@@ -368,7 +376,6 @@ export class CartComponent implements OnInit {
     return query;
   }
   
-
   save_cart() {
     Swal.fire({
       icon: 'warning',
