@@ -116,12 +116,10 @@ export class LoginComponent implements OnInit {
   
   async fetchSubscribedProducts() {
     try {
-      // Assuming you have the user's ID, replace 'userId' with the actual user ID
-      const userId = this.Usuario.id_usuario; // Replace with the actual user ID
+      const userId = this.Usuario.id_usuario; 
   
       const subscribedProductIds = await this.productService.fetchSubscribedProducts(userId).toPromise();
   
-      // Do something with the subscribed product IDs, e.g., store them in a service or component property
       console.log('Subscribed Product IDs:', subscribedProductIds);
     } catch (error) {
       console.error('Error fetching subscribed products:', error);

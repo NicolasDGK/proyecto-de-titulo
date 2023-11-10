@@ -15,15 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const pool = require('../connect_database');
 const router = express_1.default.Router();
-// Define a route to fetch the subscribed products for a user
 router.get('/:userId/subscribed-products', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.userId;
     try {
-        // Query the database to fetch the list of products the user has subscribed to
         const query = 'SELECT id_producto FROM usuarios_preferencias WHERE id_usuario = $1';
         const result = yield pool.query(query, [userId]);
         const subscribedProductIds = result.rows.map((row) => row.id_producto);
-        // You can fetch additional product details if needed based on the subscribedProductIds
         res.json({ subscribedProductIds });
     }
     catch (error) {

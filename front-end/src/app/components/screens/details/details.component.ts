@@ -94,7 +94,7 @@ export class DetailsComponent implements OnInit {
 
   fetchAndCheckAllProductsForPriceDecrease() {
     this.userPreferencesService.getAllSubscribedProducts().subscribe(
-      (response: any) => { // Explicitly specify 'response' as 'any' type
+      (response: any) => {
         const products = response.subscribedProducts;
         console.log('Products:', products);
         for (const product of products) {
@@ -105,7 +105,6 @@ export class DetailsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching subscribed products:', error);
-        // Handle the error as needed
       }
     );
   }
@@ -172,8 +171,8 @@ export class DetailsComponent implements OnInit {
     // Extract productId from the URL
     console.log('Checkbox State:', this.subscribeToProduct);
     this.route.params.subscribe(params => {
-      const productId = +params['id']; // 'id' matches the parameter name in the route config
-      console.log('Product ID:', productId); // Debugging - check if productId is correctly extracted
+      const productId = +params['id']; 
+      console.log('Product ID:', productId); 
       const userId = this.userPreferencesService.get_id_usuario();
   
       if (productId && userId) {
@@ -203,40 +202,6 @@ export class DetailsComponent implements OnInit {
       this.Producto = datos[0];
     })
   }
-
-  /*get_list_supermarket(): void {
-    console.log('ID PRODUCT TO GET THE PRICES:', this.id_producto);
-    this.ListaSuperProducto = [];
-    this.httpSuperProduct.GetListSuperProductsId(this.id_producto).subscribe((datos) => {
-      console.log('datos superproduct:', datos)
-      for (let i = 0; i < datos.items.length; i++) {
-        const item = datos.items[i];
-        item.fecha = this.convert_date(item.fecha);
-
-        // Check if the item data is the same as the previous data
-        const isSameData = this.previousSupermarketData.some((prevItem) =>
-          this.isSameSupermarketData(prevItem, item)
-        );
-
-        if (!isSameData) {
-          this.ListaSuperProducto.push(item);
-          this.previousSupermarketData.push(item); // Store this item as previous data
-        }
-      }
-      
-      this.GetListHistorialId();
-    });
-  }
-  
-  isSameSupermarketData(item1: SupermercadosProductos, item2: SupermercadosProductos): boolean {
-    return (
-      item1.supermercado === item2.supermercado &&
-      item1.fecha === item2.fecha &&
-      item1.precio_normal === item2.precio_normal &&
-      item1.precio_oferta === item2.precio_oferta &&
-      item1.disponibilidad === item2.disponibilidad
-    );
-  }*/
 
   get_list_supermarket(): void {
     console.log('ID PRODUCT TO GET THE PRICES:', this.id_producto);
@@ -288,13 +253,11 @@ export class DetailsComponent implements OnInit {
             console.log('Data received:', datos);
             for (let i = 0; i < datos.items.length; i++) {
                 const item = datos.items[i];
-                //item.fecha = this.convert_date(item.fecha);
                 this.ListaPriceHistory.push(item);
             }
         },
         (error) => {
             console.error('HTTP request error:', error);
-            // Handle the error as needed, e.g., display an error message to the user.
         }
     );
   }

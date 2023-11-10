@@ -14,22 +14,6 @@ export class ProductosService {
   private previousPrices: { [productId: number]: number } = {};
 
   constructor(private notificationService: NotificationService, private http:HttpClient) { }
-  
-  /*checkForPriceDecrease(productId: number, currentPrice: number) {
-    // Check if there is a previous price for this product
-    if (this.previousPrices.hasOwnProperty(productId)) {
-      const previousPrice = this.previousPrices[productId];
-
-      // Compare the current price with the previous price
-      if (currentPrice < previousPrice) {
-        // Trigger a notification
-        this.notificationService.addNotification(`Un producto al que te has suscrito ha bajado de precio. ID: ${productId}.`);
-      }
-    }
-
-    // Update the previous price with the current price
-    this.previousPrices[productId] = currentPrice;
-  }*/
 
   
   HttpUploadOptions = {
@@ -83,7 +67,7 @@ export class ProductosService {
   GetSavedLowestPrice(productId: number, userId: number): Observable<number> {
     return this.http.get<any>(`${environment.hostname}/usuarios-preferencias/${userId}/${productId}`)
       .pipe(
-        tap((response: any) => console.log('API Response for GetSavedLowestPrice:', response)), // Log the response
+        tap((response: any) => console.log('API Response for GetSavedLowestPrice:', response)),
         map((response: any) => response.data.lowest_price as number) // Extract 'lowest_price' property from 'data' as a number
       );
   }

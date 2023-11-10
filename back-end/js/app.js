@@ -51,7 +51,6 @@ const CategoriesFilter = require('./Filter/post_categories_filter');
 const TypesFilter = require('./Filter/post_types_filter');
 const InsertarCotizacion = require('./Cotizaciones/post_cotizacion');
 const InsertarCotizacionProductos = require('./CotizacionesProductos/post_cotizaciones_productos');
-//const GetCotizacionesTemplate  = require('./Cotizaciones/get_cotizaciones_template');
 const { getTemplateById } = require('./Cotizaciones/get_template_by_id');
 const { GetSupermarketsForProduct } = require('./Supermercados_Productos/get_list_product_id');
 const config = {
@@ -66,25 +65,18 @@ app.use('/usuarios-preferencias', postPreferenciaRouter);
 app.use('/usuarios-preferencias', updatePreferenciaRouter);
 app.use('/usuarios_preferencias', fetchPreferenciaRouter);
 app.use('/usuarios-preferencias', getSavedLowestPriceRouter);
-//app.use('/notificaciones/get/:userId', getNotificationsRouter);
-//app.use('/notificaciones/post/:userId', postNotificationsRouter);
 app.post('/notificaciones', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Extract notification data from the request body
         const { id_usuario, id_producto, message } = req.body;
-        // Check for existing notification in the database
         const checkExistingQuery = 'SELECT * FROM notificaciones WHERE id_usuario = $1 AND id_producto = $2';
         const existingNotification = yield pool.query(checkExistingQuery, [id_usuario, id_producto]);
         if (existingNotification.rows.length === 0) {
-            // No existing notification found, proceed to insert
             const insertQuery = 'INSERT INTO notificaciones (id_usuario, id_producto, message) VALUES ($1, $2, $3)';
             const insertValues = [id_usuario, id_producto, message];
             yield pool.query(insertQuery, insertValues);
-            // Respond with success message or status
             res.status(200).json({ message: 'Notification added successfully' });
         }
         else {
-            // Existing notification found, return a specific message or status code
             res.status(409).json({ message: 'Notification already exists' });
         }
     }
@@ -95,14 +87,11 @@ app.post('/notificaciones', (req, res) => __awaiter(void 0, void 0, void 0, func
 }));
 app.get('/notificaciones/:userId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Fetch notifications from the database based on the userId
         const userId = req.params.userId;
         const query = 'SELECT message FROM notificaciones WHERE id_usuario = $1';
         const values = [userId];
         const result = yield pool.query(query, values);
-        // Extract the "message" column from the database result
         const notifications = result.rows.map((row) => row.message);
-        // Send the notifications as an array to the client
         res.json(notifications);
     }
     catch (error) {
@@ -110,13 +99,10 @@ app.get('/notificaciones/:userId', (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json({ error: 'Internal server error' });
     }
 }));
-//app.get('/Producto/:id/lowestprice', Producto.GetLowestPriceProducto);
 app.get('/Productos/:productId/GetLowestPriceForProduct', Producto.GetLowestPriceProducto);
-//app.get('/Productos/:productId/GetProductoName', Producto.GetProductoName);
 app.get('/Productos/:productId/get-product-name', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const productId = parseInt(req.params.productId);
     try {
-        // Call the GetProductoName function to get the product name
         const productName = yield GetProductoFunctions.GetProductoName(productId);
         if (productName !== null) {
             console.log(`Product Name for ID ${productId}: ${productName}`);
@@ -132,7 +118,6 @@ app.get('/Productos/:productId/get-product-name', (req, res) => __awaiter(void 0
         res.status(500).json({ error: 'Internal server error' });
     }
 }));
-//app.put('/usuarios-preferencias/:productId/UpdateLowestPrice', updatePreferenciaRouter);
 app.get('/usuarios-preferencias/:userId/:productId', getSavedLowestPriceRouter);
 /* GET methods */
 app.get('/Producto/:id', Producto.GetProducto);
@@ -200,12 +185,6 @@ app.delete('/usuarios-preferencias/delete', (req, res) => __awaiter(void 0, void
         res.status(500).json({ error: 'Internal server error' });
     }
 }));
-//app.get('/Cotizaciones/get_cotizaciones_template/:id_template', GetCotizacionesTemplate);
-// ... Define other routes and middleware ...
-//const port = process.env.PORT || 3000;
-//app.listen(port, () => {
-//  console.log(`Server is running on port ${port}`);
-//});
 /* POST methods */
 app.post('/InsertarUsuario', bodyParser.json(), InsertarUsuario.PostUsuario);
 app.post('/Login', bodyParser.json(), Login.PostLogin);

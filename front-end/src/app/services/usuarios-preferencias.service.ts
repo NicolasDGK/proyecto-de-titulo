@@ -13,8 +13,6 @@ import { Router } from '@angular/router';
 })
 export class UsuariosPreferenciasService {
 
-  //private apiUrl = environment.hostname + '/api/user-preferences'; 
-
   constructor(private http: HttpClient) {}
 
   helper = new JwtHelperService();
@@ -35,9 +33,9 @@ export class UsuariosPreferenciasService {
   }
 
   saveUserPreference(productId: number, userId: number): Observable<any> {
-    console.log('Before making the HTTP request'); // Log before making the request
-    console.log('User ID (before request):', userId); // Debugging - check if userId is correctly passed
-    console.log('Product ID (before request):', productId); // Debugging - check if productId is correctly passed
+    console.log('Before making the HTTP request'); 
+    console.log('User ID (before request):', userId); 
+    console.log('Product ID (before request):', productId); 
     // Create a user preference object
     const userPreference = { user_id_usuario: userId, product_id: productId };
     console.log('User Preference:', userPreference);

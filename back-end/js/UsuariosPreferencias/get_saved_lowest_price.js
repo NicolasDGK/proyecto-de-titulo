@@ -15,12 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const pool = require('../connect_database');
 const router = express_1.default.Router();
-// Define a route to get the saved lowest price for a product and user
 router.get('/:userId/:productId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.userId;
     const productId = req.params.productId;
     try {
-        // Query the database to fetch the saved lowest price for the specified product and user
         const query = `
       SELECT lowest_price
       FROM usuarios_preferencias
@@ -28,11 +26,9 @@ router.get('/:userId/:productId', (req, res) => __awaiter(void 0, void 0, void 0
     `;
         const result = yield pool.query(query, [userId, productId]);
         if (result.rows.length === 0) {
-            // No saved lowest price found
             return res.status(404).json({ error: 'Saved lowest price not found' });
         }
         const savedLowestPrice = result.rows[0].lowest_price;
-        // Return the saved lowest price as a JSON response
         res.json({ savedLowestPrice });
     }
     catch (error) {

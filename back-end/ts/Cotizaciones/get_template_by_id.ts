@@ -2,12 +2,10 @@ import { Cotizacion } from "../interfaces/Cotizacion";
 
 const pool = require('../connect_database');
 
-// Define the function to get a template by ID
 const getTemplateById = (req:any, res:any) => {
-    const idTemplate = req.params.idTemplate; // Assuming your route parameter is named "idTemplate"
+    const idTemplate = req.params.idTemplate; 
     console.log('Received template ID:', idTemplate);
 
-    // Define the SQL query to retrieve template data by its ID
     const query = `
         SELECT c.*, cp.id_producto, cp.cantidad
         FROM cotizaciones AS c
@@ -21,12 +19,10 @@ const getTemplateById = (req:any, res:any) => {
             return res.status(500).json({ message: 'Internal server error' });
         }
 
-        // Check if any rows were returned
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Template not found' });
         }
 
-        // Process the result and build the template object
         const template = {
             id_cotizacion: result.rows[0].id_cotizacion,
             id_usuario: result.rows[0].id_usuario,
@@ -38,8 +34,6 @@ const getTemplateById = (req:any, res:any) => {
             cantidad: row.cantidad
             }))
         };
-
-        // Return the template data as JSON
         res.status(200).json(template);
     });
 };
