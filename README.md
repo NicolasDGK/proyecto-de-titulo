@@ -9,7 +9,7 @@ development of this project are: AngularCLI for the development of the web inter
 PostgreSQL, NodeJS and Express for the implementation of the database; and finally, 
 Python for the collection of information.
 
-## Technologies
+## Technologies / Tecnologias
 
 List of technologies used in this project (framework, libraries, DBMS, etc).
 
@@ -21,30 +21,32 @@ List of technologies used in this project (framework, libraries, DBMS, etc).
 * WebDriver Selenium
 * BeautifulSoup
 
-## Installation
+## Installation / Instalación
 
 You need to download the node_modules in the back-end and front-end.
+Se necesita descargar los node_modules en el back-end y front-end.
 
 ```bash
 cd ./front-end
-node install
+npm install
 ```
 
 ```bash
 cd ./back-end
-node install
+npm install
 ```
 
-## How to run project
-
-To run the front-end:
+## How to run project / Como compilar
+Open a terminal for the front-end / Abrir una terminal para el front-end
+To run the front-end / Para correr el front-end:
 
 ```bash
 cd ./front-end
 ng serve
 ```
 
-To run the back-end:
+Open a terminal for the back-end / Abrir una terminal para el back-end
+To run the back-end / Para correr el back-end:
 
 ```bash
 cd ./back-end
