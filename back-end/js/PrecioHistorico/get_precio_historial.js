@@ -12,7 +12,8 @@ const GetListHistorialId = (req, res) => {
                         
                  FROM precio_historico AS sp
                  JOIN supermercados AS s ON s.id_supermercado = sp.id_supermercado
-                 WHERE sp.id_producto = $1`;
+                 WHERE sp.id_producto = $1
+                 ORDER BY sp.fecha DESC;`;
     pool.query(query, [id], (err, respuesta) => {
         if (err) {
             console.log(err);
