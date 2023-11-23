@@ -1,13 +1,6 @@
 # Abstract
 
-The aim of this project is to assemble information about the products of different 
-supermarkets in order that the consumers can quote their monthly supermarket list 
-through a web page and compare the total value in the wide range of supermarkets. As 
-a result, the users of our website will obtain the best purchase option and will save time 
-instead of comparing products individually. The technologies needed for the 
-development of this project are: AngularCLI for the development of the web interface; 
-PostgreSQL, NodeJS and Express for the implementation of the database; and finally, 
-Python for the collection of information.
+The objective of this project is to collect information about the commercial values of products for sale in different supermarkets, so that customers can search for the products they buy monthly and compare the total amount of their purchase within a wide variety of supermarkets through a website. As a result, our website users will get the best purchasing option and save time, instead of comparing the product values individually. The technologies needed for the development of this project are: AngularCLI for the development of the web interface; PostgreSQL, NodeJS and Express for the implementation of the database; and finally, Python for the collection of information.
 
 ## Technologies / Tecnologias
 
